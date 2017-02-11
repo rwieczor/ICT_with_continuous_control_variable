@@ -2,12 +2,12 @@
 #########################################################################
 #
 # This file contains R functions implementing the estimators described  
-# in the paper: Kowalczyk B., Wieczorkowski R.:
+# in the paper: Kowalczyk B., Niemiro W., Wieczorkowski R.:
 #   "Item count technique based on two treatment groups"
 #   (Item count technique with continuous auxiliary variable)
 # (submitted to Statistical Methods in Medical Research)
 #
-# actualization date: 11.05.2016
+# actualization date: 11.02.2017
 #
 
 
@@ -134,7 +134,7 @@ em.algo.norm <- function(y1,y2,pi_inits=NULL,mi_inits=NULL,sigma2_inits=NULL,max
     # Otherwise continue iteration
     pi_cur <- pi_new; mi_cur <- mi_new; sigma2_cur <- sigma2_new;
   }
-  if(!flag) warning("Didn’t converge\n")
+  if(!flag) warning("Didnâ€™t converge\n")
   if (info) cat(i," iterations \n")
   
   if (AIC) 
@@ -151,6 +151,8 @@ em.algo.norm <- function(y1,y2,pi_inits=NULL,mi_inits=NULL,sigma2_inits=NULL,max
     lgL<-log(pi_cur)*(sum(z1)+sum(z2))+log(1-pi_cur)*(sum(1-z1)+sum(1-z2))+
       sum(z1*fL(y1+a))+sum((1-z1)*fL(y1))+sum(z2*fL(y2-a))+sum((1-z2)*fL(y2))
 
+    lgL<-lgL-sum(z1*log(z1))-sum((1-z1)*log(1-z1))-sum(z2*log(z2))-sum((1-z2)*log(1-z2))
+      
     k_param<-2
     AICvalue<-2*(k_param+1)-2*lgL
     out<-list(pi=pi_cur,mi=mi_cur,sigma2=sigma2_cur,AIC=AICvalue)
@@ -296,7 +298,7 @@ em.algo.lognorm <- function(y1,y2,pi_inits=NULL,mi_inits=NULL,sigma2_inits=NULL,
     # Otherwise continue iteration
     pi_cur <- pi_new; mi_cur <- mi_new; sigma2_cur <- sigma2_new;
   }
-  if(!flag) warning("Didn’t converge\n")
+  if(!flag) warning("Didnâ€™t converge\n")
   if (info) cat(i," iterations \n")
 
   if (AIC) 
@@ -314,6 +316,8 @@ em.algo.lognorm <- function(y1,y2,pi_inits=NULL,mi_inits=NULL,sigma2_inits=NULL,
     
     lgL<-log(pi_cur)*(sum(z1)+sum(z2))+log(1-pi_cur)*(sum(1-z1)+sum(1-z2))+
       sum(z1*fL(y1+a))+sum((1-z1)*fL(y1))+sum(z2*fL(y2-a))+sum((1-z2)*fL(y2))
+    
+    lgL<-lgL-sum(z1*log(z1))-sum((1-z1)*log(1-z1))-sum(z2*log(z2))-sum((1-z2)*log(1-z2))
     
     k_param<-2
     AICvalue<-2*(k_param+1)-2*lgL
@@ -450,7 +454,7 @@ em.algo.gamma <- function(y1,y2,pi_inits=NULL,k_inits=NULL,theta_inits=NULL,a=1,
     # Otherwise continue iteration
     pi_cur <- pi_new; k_cur <- k_new; theta_cur <- theta_new;
   }
-  if(!flag) warning("Didn’t converge\n")
+  if(!flag) warning("Didnâ€™t converge\n")
   if (info) cat(i," iterations \n")
 
   if (AIC) 
@@ -469,6 +473,7 @@ em.algo.gamma <- function(y1,y2,pi_inits=NULL,k_inits=NULL,theta_inits=NULL,a=1,
     lgL<-log(pi_cur)*(sum(z1)+sum(z2))+log(1-pi_cur)*(sum(1-z1)+sum(1-z2))+
       sum(z1*fL(y1+a))+sum((1-z1)*fL(y1))+sum(z2*fL(y2-a))+sum((1-z2)*fL(y2))
     
+    lgL<-lgL-sum(z1*log(z1))-sum((1-z1)*log(1-z1))-sum(z2*log(z2))-sum((1-z2)*log(1-z2))
     
     k_param<-2
     AICvalue<-2*(k_param+1)-2*lgL
@@ -588,7 +593,7 @@ em.algo.poi <- function(y1,y2,pi_inits=NULL,lambda_inits=NULL,a=1,maxit=10000,to
     # Otherwise continue iteration
     pi_cur <- pi_new; lambda_cur <- lambda_new;
   }
-  if(!flag) warning("Didn’t converge\n")
+  if(!flag) warning("Didnâ€™t converge\n")
   if (info) cat(i," iterations \n")
   
   return(list(pi=pi_cur, lambda=lambda_cur))
@@ -644,5 +649,4 @@ ML.boot.ci<-function(y1,y2,a=1,conf=0.95,model="normal")
   return(list(LowerCI=Lci,UpperCI=Uci))
   
 }
-
 
