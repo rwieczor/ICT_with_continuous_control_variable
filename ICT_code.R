@@ -3,11 +3,11 @@
 #
 # This file contains R functions implementing the estimators described  
 # in the paper: Kowalczyk B., Niemiro W., Wieczorkowski R.:
-#   "Item count technique based on two treatment groups"
+#   "Item count technique based on two different treatment groups"
 #   (Item count technique with continuous auxiliary variable)
 # (submitted to Statistical Methods in Medical Research)
 #
-# actualization date: 11.02.2017
+# actualization date: 02.05.2017
 #
 
 
@@ -188,13 +188,13 @@ estep.lognorm <- function(y1,y2,pp,mi,sigma2,a=1)
 #    output list contains two vectors with expected values 
 #
 {
-  z1_estep <- (pp/log(y1+a))/
+  z1_estep <- (pp/(y1+a))/
     ( 
-      pp/log(y1+a)+((1-pp)/log(y1))*exp((log(y1+a)-log(y1))*(log(y1+a)+log(y1)-2*mi)/(2*sigma2)) 
+      pp/(y1+a)+((1-pp)/(y1))*exp((log(y1+a)-log(y1))*(log(y1+a)+log(y1)-2*mi)/(2*sigma2)) 
     )
-  z2_estep <- (pp/log(y2-a))/
+  z2_estep <- (pp/(y2-a))/
     ( 
-      pp/log(y2-a)+((1-pp)/log(y2))*exp((log(y2-a)-log(y2))*(log(y2-a)+log(y2)-2*mi)/(2*sigma2)) 
+      pp/(y2-a)+((1-pp)/(y2))*exp((log(y2-a)-log(y2))*(log(y2-a)+log(y2)-2*mi)/(2*sigma2)) 
     )
   
   z1_estep <- ifelse(y1<=0,1,z1_estep)
